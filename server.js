@@ -24,8 +24,6 @@ app.get(`${endpoint}/xml`, (req, res) => {
   res.set('Content-Type', 'text/xml').send(xml);
 });
 
-// listen for requests :)
-// process.env.PORT
 const listener = app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Your app is listening on port ${listener.address().port}`);
