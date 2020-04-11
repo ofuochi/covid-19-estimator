@@ -53,7 +53,7 @@ app.get(`${endpoint}/logs`, (_, res) => {
   });
 });
 
-const listener = app.listen(4000, () => {
+const listener = app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Your app is listening on port ${listener.address().port}`);
 });
