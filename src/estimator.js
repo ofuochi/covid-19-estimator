@@ -25,10 +25,11 @@ const covid19ImpactEstimator = (data) => {
     timeToElapse,
     region
   } = data;
+  const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
   const factor = computeFactor(periodType, timeToElapse);
   const availableHospitalBeds = Math.trunc((35 / 100) * totalHospitalBeds);
   const incomePerDay =
-    (region.avgDailyIncomeInUSD * region.avgDailyIncomePopulation) /
+    (avgDailyIncomeInUSD * avgDailyIncomePopulation) /
     toDays(periodType, timeToElapse);
 
   const output = new EstimationOutput();
