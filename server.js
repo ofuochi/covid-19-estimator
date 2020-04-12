@@ -15,12 +15,25 @@ const filePath = path.join(__dirname, 'audit.log');
 const accessLogStream = fs.createWriteStream(filePath, { flags: 'a' });
 
 app.use(helmet());
-app.use(
-  morgan(':method\t:url\t:status\t:response-time[0]ms', {
+const logger = morgan(
+  (tokens, req, res) => {
+    let responseTime = Math.ceil(tokens['response-time'](req, res))
+      .toString()
+      .padStart(2, 0);
+    responseTime = `${responseTime}ms`;
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      responseTime
+    ].join(' ');
+  },
+  {
     stream: accessLogStream,
     skip: (_, res) => res.statusCode === 404
-  })
+  }
 );
+app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
