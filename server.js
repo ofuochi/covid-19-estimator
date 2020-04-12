@@ -47,7 +47,8 @@ app.post(`${endpoint}/xml`, validator.body(schema), (req, res) => {
 app.get(`${endpoint}/logs`, (_, res) => {
   fs.readFile(filePath, { encoding: 'utf-8' }, (err, text) => {
     if (!err) {
-      res.header('Content-Type', 'text/plain').status(200).send(text);
+      if (text) res.header('Content-Type', 'text/plain').status(200).send(text);
+      else res.header('Content-Type', 'text/plain').status(200).send('Empty');
     } else {
       res.status(500).send('Could not get logs');
     }
