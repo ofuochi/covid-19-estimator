@@ -17,7 +17,8 @@ const accessLogStream = fs.createWriteStream(filePath, { flags: 'a' });
 app.use(helmet());
 app.use(
   morgan(':method  :url  :status  :response-time[0]ms\n', {
-    stream: accessLogStream
+    stream: accessLogStream,
+    skip: (_, res) => res.statusCode > 400
   })
 );
 app.use(express.json());
