@@ -16,7 +16,7 @@ const accessLogStream = fs.createWriteStream(filePath, { flags: 'a' });
 
 app.use(helmet());
 app.use(
-  morgan(':method\t:url\t\t:status\t:response-time[0]ms', {
+  morgan(':method\t:url\t:status\t:response-time[0]ms', {
     stream: accessLogStream,
     skip: (_, res) => res.statusCode === 404
   })
