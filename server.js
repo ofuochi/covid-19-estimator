@@ -16,7 +16,7 @@ const accessLogStream = fs.createWriteStream(filePath, { flags: 'a' });
 
 app.use(helmet());
 app.use(
-  morgan(':method\t:url\t:status\t:response-time[0]ms', {
+  morgan(':method  :url  :status  :response-time[0]ms\n', {
     stream: accessLogStream
   })
 );
@@ -47,8 +47,7 @@ app.post(`${endpoint}/xml`, validator.body(schema), (req, res) => {
 app.get(`${endpoint}/logs`, (_, res) => {
   fs.readFile(filePath, { encoding: 'utf-8' }, (err, text) => {
     if (!err) {
-      if (text) res.header('Content-Type', 'text/plain').status(200).send(text);
-      else res.header('Content-Type', 'text/plain').status(200).send('Empty');
+      res.header('Content-Type', 'text/plain').status(200).send(text);
     } else {
       res.status(500).send('Could not get logs');
     }
