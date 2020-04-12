@@ -27,7 +27,7 @@ const covid19ImpactEstimator = (data) => {
   } = data;
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
   const factor = computeFactor(periodType, timeToElapse);
-  const availableHospitalBeds = Math.trunc((35 / 100) * totalHospitalBeds);
+  const availableHospitalBeds = (35 / 100) * totalHospitalBeds;
   const incomePerDay =
     (avgDailyIncomeInUSD * avgDailyIncomePopulation) /
     toDays(periodType, timeToElapse);
@@ -40,11 +40,15 @@ const covid19ImpactEstimator = (data) => {
   output.impact.infectionsByRequestedTime =
     output.impact.currentlyInfected * 2 ** factor;
 
+  const impactSevereCasesByRequestedTime =
+    (15 / 100) * output.impact.infectionsByRequestedTime;
+
   output.impact.severeCasesByRequestedTime = Math.trunc(
-    (15 / 100) * output.impact.infectionsByRequestedTime
+    impactSevereCasesByRequestedTime
   );
-  output.impact.hospitalBedsByRequestedTime =
-    availableHospitalBeds - output.impact.severeCasesByRequestedTime;
+  output.impact.hospitalBedsByRequestedTime = Math.trunc(
+    availableHospitalBeds - impactSevereCasesByRequestedTime
+  );
 
   output.impact.casesForICUByRequestedTime = Math.trunc(
     (5 / 100) * output.impact.infectionsByRequestedTime
@@ -61,11 +65,14 @@ const covid19ImpactEstimator = (data) => {
   output.severeImpact.infectionsByRequestedTime =
     output.severeImpact.currentlyInfected * 2 ** factor;
 
+  const severeImpactSevereCasesByRequestedTime =
+    (15 / 100) * output.severeImpact.infectionsByRequestedTime;
   output.severeImpact.severeCasesByRequestedTime = Math.trunc(
-    (15 / 100) * output.severeImpact.infectionsByRequestedTime
+    severeImpactSevereCasesByRequestedTime
   );
-  output.severeImpact.hospitalBedsByRequestedTime =
-    availableHospitalBeds - output.severeImpact.severeCasesByRequestedTime;
+  output.severeImpact.hospitalBedsByRequestedTime = Math.trunc(
+    availableHospitalBeds - severeImpactSevereCasesByRequestedTime
+  );
 
   output.severeImpact.casesForICUByRequestedTime = Math.trunc(
     (5 / 100) * output.severeImpact.infectionsByRequestedTime
