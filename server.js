@@ -37,12 +37,10 @@ app.post(`${endpoint}/json`, validator.body(schema), (req, res) => {
 
 // get response in XML format
 app.post(`${endpoint}/xml`, validator.body(schema), (req, res) => {
-  const json = covid19ImpactEstimator(req.body);
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?><root>${jsonxml(
-    json
-  )}</root>`;
-  res.header('Content-Type', 'text/xml').status(200).send(xml);
+  let json = covid19ImpactEstimator(req.body);
+  json = { root: json };
+  const xml = jsonxml(json, { xmlHeader: true });
+  res.header('Content-Type', 'application/xml').status(200).send(xml);
 });
 
 // get logs
