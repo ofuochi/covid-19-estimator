@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // get response in JSON format
 app.post(endpoint, validator.body(schema), (req, res) => {
   const json = covid19ImpactEstimator(req.body);
-  res.json(json);
+  res.status(200).json(json);
 });
 
 // get response in JSON format
