@@ -1,6 +1,6 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
-const EstimationOutput = require('./EstimationOutput');
+const EstimationOutput = require('./output');
 
 const toDays = (periodType, timeToElapse) => {
   switch (periodType) {
